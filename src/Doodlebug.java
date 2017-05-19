@@ -7,9 +7,12 @@ public class Doodlebug extends Organism {
     private int lastEat; // timestamp of last eat
 
     // constructors
-    Doodlebug(int posX, int posY) {
-        super(posX,posY);
-        System.out.println("Stub Doodlebug constructor called");
+    Doodlebug() {
+        // setup variables
+        lastEat = 0;
+
+        // set grid location
+        grid[pos[1]][pos[0]] = 'X';
     }
 
     // accessors

@@ -4,9 +4,9 @@
 
 public class Ant extends Organism {
     // constructors
-    Ant(int posX, int posY) {
-        super(posX, posY);
-        System.out.println("Stub Ant constructor called");
+    Ant() {
+        // set grid location
+        grid[pos[1]][pos[0]] = 'o';
     }
 
     // methods
