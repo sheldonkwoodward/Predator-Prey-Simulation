@@ -39,22 +39,11 @@ public class Simulation {
 
     // methods
     void run() {
-        /*
-         * move Doodlebugs
-         * remove dead ant
-         * move Ants
-         * breed Doodlebugs
-         * breed Ants
-         * starve Doodlebugs
-         * endSimulation()
-         * timeAdvance()
-         * display()
-         * wait for input
-         */
+        int outputRate = 1;
+        boolean displayGrid = true;
 
+        // simulation loop
         while(!endSimulation()) {
-            System.out.println();
-
             // move doodlebugs
             for(int i = 0; i < doodlebugList.size(); i++) {
                 if (doodlebugList.get(i).getAlive()) {
@@ -75,23 +64,32 @@ public class Simulation {
             // breed Doodlebugs
             int doodlebugNum = doodlebugList.size();
             for(int i = 0; i < doodlebugNum; i++) {
-                int breed = doodlebugList.get(i).breed(time, 8);
+                // get specific doodlebug info
+                int breed = doodlebugList.get(i).breed(time);
                 int posX = doodlebugList.get(i).getPosX();
                 int posY = doodlebugList.get(i).getPosY();
 
+                // spawn new doodlebug in specified breed direction
                 if(breed == 0) doodlebugList.add(new Doodlebug(time, posX + 1, posY));
                 else if(breed == 1) doodlebugList.add(new Doodlebug(time, posX - 1, posY));
                 else if(breed == 2) doodlebugList.add(new Doodlebug(time, posX, posY + 1));
                 else if(breed == 3) doodlebugList.add(new Doodlebug(time, posX, posY - 1));
             }
 
+            // remove dead ants
+            for(int i = 0; i < antList.size(); i++) {
+                antList.get(i).checkDead();
+            }
+
             // breed Ants
-            int antNum = doodlebugList.size();
+            int antNum = antList.size();
             for(int i = 0; i < antNum; i++) {
-                int breed = antList.get(i).breed(time, 3);
+                // get specific ant info
+                int breed = antList.get(i).breed(time);
                 int posX = antList.get(i).getPosX();
                 int posY = antList.get(i).getPosY();
 
+                // spawn new ant in specified breed direction
                 if(breed == 0) antList.add(new Ant(time, posX + 1, posY));
                 else if(breed == 1) antList.add(new Ant(time, posX - 1, posY));
                 else if(breed == 2) antList.add(new Ant(time, posX, posY + 1));
@@ -103,14 +101,26 @@ public class Simulation {
                 doodlebugList.get(i).starve(time);
             }
 
-            // show time info
-            timeInfo();
+            if(time % outputRate == 0) {
+                System.out.println();
 
-            // display grid
-            display();
+                // show time info
+                timeInfo();
+
+                // display grid
+                display();
+            }
 
             // advance time
             timeAdvance();
+
+            // sleep
+            try {
+                Thread.sleep(300);
+            }
+            catch(InterruptedException e) {
+                System.out.println("Sleep exception");
+            }
         }
     }
     private void timeAdvance() {
@@ -157,20 +167,20 @@ public class Simulation {
         char[][] grid = Doodlebug.getGrid();
 
         // print border
-        for(int i = 0; i < 22; i++) System.out.print('-');
+        for(int i = 0; i < 43; i++) System.out.print('-');
         System.out.println();
 
         // print content and border
         for(int y = 0; y < 20; y++) {
-            System.out.print('|');
+            System.out.print("| ");
             for(int x = 0; x < 20; x++) {
-                System.out.print(grid[y][x]);
+                System.out.print(grid[y][x] + " ");
             }
             System.out.println('|');
         }
 
         // print border
-        for(int i = 0; i < 22; i++) System.out.print('-');
+        for(int i = 0; i < 43; i++) System.out.print('-');
         System.out.println();
     }
 }
