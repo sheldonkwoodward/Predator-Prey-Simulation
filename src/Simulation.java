@@ -1,25 +1,34 @@
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Sheldon Woodward on 5/19/2017.
  */
 
 public class Simulation {
     // variables
-    private Doodlebug[] doodlebugs;
-    private Ant[] ants;
+    // private Doodlebug[] doodlebugs;
+    // private Ant[] ants;
+    private List<Doodlebug> doodlebugList;
+    private List<Ant> antList;
     private int time;
 
     // constructors
     Simulation(int _doodlebugs, int _ants) {
         // initialize arrays
-        doodlebugs = new Doodlebug[_doodlebugs];
-        ants = new Ant[_ants];
+        // doodlebugs = new Doodlebug[_doodlebugs];
+        // ants = new Ant[_ants];
+        doodlebugList = new ArrayList<>();
+        antList = new ArrayList<>();
 
         // add doodlebugs and ants
         for(int i = 0; i < _doodlebugs; i++) {
-            doodlebugs[i] = new Doodlebug();
+            // doodlebugList.get(i) = new Doodlebug();
+            doodlebugList.add(new Doodlebug());
         }
         for(int i = 0; i < _ants; i++) {
-            ants[i] = new Ant();
+            // antList.get(i) = new Ant();
+            antList.add(new Ant());
         }
     }
 
@@ -49,19 +58,19 @@ public class Simulation {
             timeInfo();
 
             // move doodlebugs
-            for(int i = 0; i < 5; i++) {
-                if (doodlebugs[i].getAlive()) {
-                    doodlebugs[i].move(time);
+            for(int i = 0; i < doodlebugList.size(); i++) {
+                if (doodlebugList.get(i).getAlive()) {
+                    doodlebugList.get(i).move(time);
                 }
             }
 
             // remove dead ants and move living
-            for(int i = 0; i < 100; i++) {
-                ants[i].checkDead();
+            for(int i = 0; i < antList.size(); i++) {
+                antList.get(i).checkDead();
             }
-            for(int i = 0; i < 100; i++) {
-                if(ants[i].getAlive()) {
-                    ants[i].move();
+            for(int i = 0; i < antList.size(); i++) {
+                if(antList.get(i).getAlive()) {
+                    antList.get(i).move();
                 }
             }
 
@@ -69,8 +78,8 @@ public class Simulation {
             // breed Ants
 
             // starve Doodlebugs
-            for(int i = 0; i < 5; i++) {
-                doodlebugs[i].starve(time);
+            for(int i = 0; i < doodlebugList.size(); i++) {
+                doodlebugList.get(i).starve(time);
             }
 
             // display grid
@@ -89,13 +98,13 @@ public class Simulation {
         int antsAlive = 0;
 
         // check doodlebugs
-        for(int i = 0; i < 5; i++) {
-            if(doodlebugs[i].getAlive()) doodlebugsAlive++;
+        for(int i = 0; i < doodlebugList.size(); i++) {
+            if(doodlebugList.get(i).getAlive()) doodlebugsAlive++;
         }
 
         // check ants
-        for(int i = 0; i < 100; i++) {
-            if(ants[i].getAlive()) antsAlive++;
+        for(int i = 0; i < antList.size(); i++) {
+            if(antList.get(i).getAlive()) antsAlive++;
         }
 
         if(doodlebugsAlive == 0 || antsAlive == 0) return true;
@@ -105,13 +114,13 @@ public class Simulation {
         //organisms alive
         int dbAlive = 0;
         int antAlive = 0;
-        for(int i = 0; i < 5; i++) {
-            if(doodlebugs[i].getAlive()) {
+        for(int i = 0; i < doodlebugList.size(); i++) {
+            if(doodlebugList.get(i).getAlive()) {
                 dbAlive++;
             }
         }
-        for(int i = 0; i < 100; i++) {
-            if(ants[i].getAlive()) {
+        for(int i = 0; i < antList.size(); i++) {
+            if(antList.get(i).getAlive()) {
                 antAlive++;
             }
         }
