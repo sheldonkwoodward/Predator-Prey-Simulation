@@ -1,16 +1,14 @@
-/**
- * Created by Sheldon Woodward on 5/19/2017.
+/*
+ * Sheldon Woodward
+ * Doodlebug.java
  */
 
-public class Doodlebug extends Organism {
+class Doodlebug extends Organism {
     // variables
     private int lastEat; // timestamp of last eat
 
     // constructors
     Doodlebug(int currentTime) {
-        // call super class constructor
-        super(currentTime);
-
         // setup variables
         lastEat = currentTime;
 
@@ -19,7 +17,7 @@ public class Doodlebug extends Organism {
     }
     Doodlebug(int currentTime, int posX, int posY) {
         // call super class constructor
-        super(currentTime, posX, posY);
+        super(posX, posY);
 
         // setup variables
         lastEat = currentTime;
@@ -28,82 +26,27 @@ public class Doodlebug extends Organism {
         grid[pos[1]][pos[0]] = 'X';
     }
 
-    // accessors
-    int getLastEat() {
-        return lastEat;
-    }
-
     // methods
     void move(int currentTime) {
-        // get adjacent spaces
-        char[] adj = new char[4];
-
-        // get adj right
-        try {
-            adj[0] = grid[pos[1]][pos[0] + 1];
-        }
-        catch(ArrayIndexOutOfBoundsException e) {
-            adj[0] = 'B';
-        }
-
-        // get adj left
-        try {
-            adj[1] = grid[pos[1]][pos[0] - 1];
-        }
-        catch(ArrayIndexOutOfBoundsException e) {
-            adj[1] = 'B';
-        }
-
-        // get adj up
-        try {
-            adj[2] = grid[pos[1] + 1][pos[0]];
-        }
-        catch(ArrayIndexOutOfBoundsException e) {
-            adj[2] = 'B';
-        }
-
-        // get adj down
-        try {
-            adj[3] = grid[pos[1] - 1][pos[0]];
-        }
-        catch(ArrayIndexOutOfBoundsException e) {
-            adj[3] = 'B';
-        }
+        // adjacent spaces
+        char[] adj = adjacent();
 
         // check for ant
         boolean moved = false; // position changed
-        if(adj[0] == 'o') {
-            move(0, 'X');
-            moved = true;
-            lastEat = currentTime;
-            // System.out.println("  Ate ant (" + pos[0] + "," + pos[1] + ")");
-        }
-        else if(adj[1] == 'o') {
-            move(1, 'X');
-            moved = true;
-            lastEat = currentTime;
-            // System.out.println("  Ate ant (" + pos[0] + "," + pos[1] + ")");
-        }
-        else if(adj[2] == 'o') {
-            move(2, 'X');
-            moved = true;
-            lastEat = currentTime;
-            // System.out.println("  Ate ant (" + pos[0] + "," + pos[1] + ")");
-        }
-        else if(adj[3] == 'o') {
-            move(3, 'X');
-            moved = true;
-            lastEat = currentTime;
-            // System.out.println("  Ate ant (" + pos[0] + "," + pos[1] + ")");
-        }
-
-        // check for empty space
-        int emptySpaces = 0;
         for(int i = 0; i < 4; i++) {
-            if(adj[i] == ' ') {
-                emptySpaces++;
+            if(adj[i] == 'o') {
+                move(i, 'X');
+                moved = true;
+                lastEat = currentTime;
+                break;
             }
         }
+
+        // count empty spaces
+        int emptySpaces = 0;
+        for(int i = 0; i < 4; i++)
+            if(adj[i] == ' ')
+                emptySpaces++;
 
         // move to random space if available
         if(emptySpaces > 0) {
@@ -125,65 +68,14 @@ public class Doodlebug extends Organism {
         }
         return false;
     }
-    int breed(int currentTime) {
-        if(currentTime - lastBreed >= 8) {
-            // get adjacent spaces
-            char[] adj = new char[4];
+    int breed() {
+        // get adjacent spaces
+        char[] adj = adjacent();
 
-            // get adj right
-            try {
-                adj[0] = grid[pos[1]][pos[0] + 1];
-            }
-            catch(ArrayIndexOutOfBoundsException e) {
-                adj[0] = 'B';
-            }
-
-            // get adj left
-            try {
-                adj[1] = grid[pos[1]][pos[0] - 1];
-            }
-            catch(ArrayIndexOutOfBoundsException e) {
-                adj[1] = 'B';
-            }
-
-            // get adj up
-            try {
-                adj[2] = grid[pos[1] + 1][pos[0]];
-            }
-            catch(ArrayIndexOutOfBoundsException e) {
-                adj[2] = 'B';
-            }
-
-            // get adj down
-            try {
-                adj[3] = grid[pos[1] - 1][pos[0]];
-            }
-            catch(ArrayIndexOutOfBoundsException e) {
-                adj[3] = 'B';
-            }
-
-            // breed
-            if(adj[0] == ' ' || adj[0] == 'o') {
-                // System.out.println("  Doodlebug breed (" + pos[0] + "," + pos[1] + ")");
-                lastBreed = currentTime;
-                return 0;
-            }
-            else if(adj[1] == ' ' || adj[1] == 'o') {
-                // System.out.println("  Doodlebug breed (" + pos[0] + "," + pos[1] + ")");
-                lastBreed = currentTime;
-                return 1;
-            }
-            else if(adj[2] == ' ' || adj[2] == 'o') {
-                // System.out.println("  Doodlebug breed (" + pos[0] + "," + pos[1] + ")");
-                lastBreed = currentTime;
-                return 2;
-            }
-            else if(adj[3] == ' ' || adj[3] == 'o') {
-                // System.out.println("  Doodlebug breed (" + pos[0] + "," + pos[1] + ")");
-                lastBreed = currentTime;
-                return 3;
-            }
-        }
+        // breed
+        for(int i = 0; i < 4; i++)
+            if(adj[i] == ' ' || adj[i] == 'o')
+                return i;
         return 4;
     }
 }

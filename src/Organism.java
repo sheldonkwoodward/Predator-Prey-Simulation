@@ -1,12 +1,12 @@
-/**
- * Created by Sheldon Woodward on 5/19/2017.
+/*
+ * Sheldon Woodward
+ * Organism.java
  */
 
-public class Organism {
+class Organism {
     // variables
-    protected static char[][] grid; // grid of all Organism locations
-    protected int[] pos; // index 0 is x, index 1 is y
-    protected int lastBreed; // timestamp of last breeding
+    final static char[][] grid; // grid of all Organism locations
+    int[] pos; // index 0 is x, index 1 is y
 
     // constructors
     static {
@@ -17,10 +17,9 @@ public class Organism {
             }
         }
     }
-    Organism(int currentTime) {
+    Organism() {
         // setup variables
         pos = new int[2];
-        lastBreed = currentTime;
 
         // random position till empty is found
         do {
@@ -28,17 +27,15 @@ public class Organism {
             pos[1] = (int)(Math.random() * 20);
         } while(grid[pos[1]][pos[0]] != ' ');
     }
-    Organism(int currentTime, int posX, int posY) {
-        // setup variables
-        pos = new int[2];
-        lastBreed = currentTime;
-
+    Organism(int posX, int posY) {
         // set position
+        pos = new int[2];
         pos[0] = posX;
         pos[1] = posY;
     }
 
     // accessors
+    @SuppressWarnings("SameReturnValue")
     static char[][] getGrid() {
         return grid;
     }
@@ -48,15 +45,8 @@ public class Organism {
     int getPosY() {
         return pos[1];
     }
-    int getLastBreed() {
-        return lastBreed;
-    }
 
-    // methods
-    void move() {
-        System.out.println("Stub move called");
-    }
-    protected void move(int direction, char organismChar) {
+    void move(int direction, char organismChar) {
         // change old position on grid
         grid[pos[1]][pos[0]] = ' ';
 
@@ -68,5 +58,43 @@ public class Organism {
 
         //change new position on grid
         grid[pos[1]][pos[0]] = organismChar;
+    }
+    char[] adjacent() {
+        // get adjacent spaces
+        char[] adj = new char[4];
+
+        // get adj right
+        try {
+            adj[0] = grid[pos[1]][pos[0] + 1];
+        }
+        catch(ArrayIndexOutOfBoundsException e) {
+            adj[0] = 'B';
+        }
+
+        // get adj left
+        try {
+            adj[1] = grid[pos[1]][pos[0] - 1];
+        }
+        catch(ArrayIndexOutOfBoundsException e) {
+            adj[1] = 'B';
+        }
+
+        // get adj up
+        try {
+            adj[2] = grid[pos[1] + 1][pos[0]];
+        }
+        catch(ArrayIndexOutOfBoundsException e) {
+            adj[2] = 'B';
+        }
+
+        // get adj down
+        try {
+            adj[3] = grid[pos[1] - 1][pos[0]];
+        }
+        catch(ArrayIndexOutOfBoundsException e) {
+            adj[3] = 'B';
+        }
+
+        return adj;
     }
 }
