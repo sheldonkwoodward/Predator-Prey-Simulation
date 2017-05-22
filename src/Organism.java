@@ -7,7 +7,6 @@ public class Organism {
     protected static char[][] grid; // grid of all Organism locations
     protected int[] pos; // index 0 is x, index 1 is y
     protected int lastBreed; // timestamp of last breeding
-    protected boolean alive; // alive or dead
 
     // constructors
     static {
@@ -22,7 +21,6 @@ public class Organism {
         // setup variables
         pos = new int[2];
         lastBreed = currentTime;
-        alive = true;
 
         // random position till empty is found
         do {
@@ -34,7 +32,6 @@ public class Organism {
         // setup variables
         pos = new int[2];
         lastBreed = currentTime;
-        alive = true;
 
         // set position
         pos[0] = posX;
@@ -53,9 +50,6 @@ public class Organism {
     }
     int getLastBreed() {
         return lastBreed;
-    }
-    boolean getAlive() {
-        return alive;
     }
 
     // methods

@@ -118,15 +118,15 @@ public class Doodlebug extends Organism {
             }
         }
     }
-    void starve(int currentTime) {
-        if(currentTime - lastEat >= 3 && alive) {
-            alive = false;
+    boolean starve(int currentTime) {
+        if(currentTime - lastEat >= 3) {
             grid[pos[1]][pos[0]] = ' ';
-            // System.out.println("  Doodlebug starved (" + pos[0] + "," + pos[1] + ")");
+            return true;
         }
+        return false;
     }
     int breed(int currentTime) {
-        if(currentTime - lastBreed >= 8 && alive) {
+        if(currentTime - lastBreed >= 8) {
             // get adjacent spaces
             char[] adj = new char[4];
 

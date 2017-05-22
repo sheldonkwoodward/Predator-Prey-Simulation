@@ -81,13 +81,12 @@ public class Ant extends Organism {
     }
     boolean checkDead() {
         if(grid[pos[1]][pos[0]] == 'X') {
-            alive = false;
             return true;
         }
         return false;
     }
     int breed(int currentTime) {
-        if(currentTime - lastBreed >= 3 && alive) {
+        if(currentTime - lastBreed >= 3) {
             // get adjacent spaces
             char[] adj = new char[4];
 

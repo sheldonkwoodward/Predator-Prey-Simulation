@@ -39,26 +39,27 @@ public class Simulation {
 
     // methods
     void run() {
-        int outputRate = 1;
+        int timeDelay = 100;
+        int outputSkipRate = 1;
         boolean displayGrid = true;
 
         // simulation loop
         while(!endSimulation()) {
             // move doodlebugs
             for(int i = 0; i < doodlebugList.size(); i++) {
-                if (doodlebugList.get(i).getAlive()) {
-                    doodlebugList.get(i).move(time);
+                doodlebugList.get(i).move(time);
+            }
+
+            // remove dead ants
+            for(int i = 0; i < antList.size(); i++) {
+                if(antList.get(i).checkDead()) {
+                    antList.remove(i);
                 }
             }
 
-            // remove dead ants and move living
+            // move ants
             for(int i = 0; i < antList.size(); i++) {
-                antList.get(i).checkDead();
-            }
-            for(int i = 0; i < antList.size(); i++) {
-                if(antList.get(i).getAlive()) {
-                    antList.get(i).move();
-                }
+                antList.get(i).move();
             }
 
             // breed Doodlebugs
@@ -76,9 +77,11 @@ public class Simulation {
                 else if(breed == 3) doodlebugList.add(new Doodlebug(time, posX, posY - 1));
             }
 
-            // remove dead ants
+            // remove dead ants from doodlebug breeding
             for(int i = 0; i < antList.size(); i++) {
-                antList.get(i).checkDead();
+                if(antList.get(i).checkDead()) {
+                    antList.remove(i);
+                }
             }
 
             // breed Ants
@@ -98,17 +101,19 @@ public class Simulation {
 
             // starve Doodlebugs
             for(int i = 0; i < doodlebugList.size(); i++) {
-                doodlebugList.get(i).starve(time);
+                if(doodlebugList.get(i).starve(time)) {
+                    doodlebugList.remove(i);
+                }
             }
 
-            if(time % outputRate == 0) {
-                System.out.println();
+            if(time % outputSkipRate == 0) {
+                if(displayGrid) System.out.println();
 
                 // show time info
                 timeInfo();
 
                 // display grid
-                display();
+                if(displayGrid) display();
             }
 
             // advance time
@@ -116,7 +121,7 @@ public class Simulation {
 
             // sleep
             try {
-                Thread.sleep(300);
+                Thread.sleep(timeDelay);
             }
             catch(InterruptedException e) {
                 System.out.println("Sleep exception");
@@ -128,39 +133,12 @@ public class Simulation {
         time++;
     }
     private boolean endSimulation() {
-        int doodlebugsAlive = 0;
-        int antsAlive = 0;
-
-        // check doodlebugs
-        for(int i = 0; i < doodlebugList.size(); i++) {
-            if(doodlebugList.get(i).getAlive()) doodlebugsAlive++;
-        }
-
-        // check ants
-        for(int i = 0; i < antList.size(); i++) {
-            if(antList.get(i).getAlive()) antsAlive++;
-        }
-
-        if(doodlebugsAlive == 0 || antsAlive == 0) return true;
+        if(doodlebugList.size() == 0 || antList.size() == 0) return true;
         return false;
     }
     private void timeInfo() {
-        //organisms alive
-        int dbAlive = 0;
-        int antAlive = 0;
-        for(int i = 0; i < doodlebugList.size(); i++) {
-            if(doodlebugList.get(i).getAlive()) {
-                dbAlive++;
-            }
-        }
-        for(int i = 0; i < antList.size(); i++) {
-            if(antList.get(i).getAlive()) {
-                antAlive++;
-            }
-        }
-
         // Time info
-        System.out.println("Time: " + time + " Doodlebugs: " + dbAlive + " Ants: " + antAlive);
+        System.out.println("Time: " + time + " Doodlebugs: " + doodlebugList.size() + " Ants: " + antList.size());
     }
     private void display() {
         // retrieve grid
