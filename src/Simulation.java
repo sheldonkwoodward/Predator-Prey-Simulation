@@ -97,6 +97,7 @@ class Simulation {
                 if(doodlebugList.get(i).starve(time))
                     doodlebugList.remove(i);
 
+            // output time and display info
             if(time % outputSkipRate == 0) {
                 if(displayGrid) System.out.println();
 

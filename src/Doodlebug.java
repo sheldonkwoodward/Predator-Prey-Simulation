@@ -32,32 +32,20 @@ class Doodlebug extends Organism {
         char[] adj = adjacent();
 
         // check for ant
-        boolean moved = false; // position changed
-        for(int i = 0; i < 4; i++) {
-            if(adj[i] == 'o') {
-                move(i, 'X');
-                moved = true;
+        int startingNum = (int)(Math.random() * 4);
+        for(int i = startingNum; i < startingNum + 4; i++) {
+            if(adj[i % 4] == 'o') {
+                move(i % 4, 'X');
                 lastEat = currentTime;
-                break;
+                return;
             }
         }
 
-        // count empty spaces
-        int emptySpaces = 0;
-        for(int i = 0; i < 4; i++)
-            if(adj[i] == ' ')
-                emptySpaces++;
-
-        // move to random space if available
-        if(emptySpaces > 0) {
-            while (!moved) {
-                int randomNum = (int)(Math.random() * 4);
-                for(int i = 0; i < 4; i++) {
-                    if (randomNum == i && adj[i] == ' ') {
-                        move(i, 'X');
-                        moved = true;
-                    }
-                }
+        // move to empty space
+        for (int i = startingNum; i < startingNum + 4; i++) {
+            if (adj[i % 4] == ' ') {
+                move(i % 4, 'X');
+                return;
             }
         }
     }

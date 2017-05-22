@@ -8,6 +8,6 @@
  class PPS {
      public static void main(String[] args) {
          Simulation s = new Simulation(5, 100);
-         s.run(0,1,true, true);
+         s.run(300,1,true, false);
      }
  }

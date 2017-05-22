@@ -22,25 +22,12 @@ class Ant extends Organism {
         // get adjacent spaces
         char[] adj = adjacent();
 
-        // check for empty space
-        boolean moved = false; // position changed
-
-        // count empty spaces
-        int emptySpaces = 0;
-        for(int i = 0; i < 4; i++)
-            if(adj[i] == ' ')
-                emptySpaces++;
-
         // move to random space if available
-        if(emptySpaces > 0) {
-            while (!moved) {
-                int randomNum = (int)(Math.random() * 4);
-                for(int i = 0; i < 4; i++) {
-                    if (randomNum == i && adj[i] == ' ') {
-                        move(i, 'o');
-                        moved = true;
-                    }
-                }
+        int startingNum = (int)(Math.random() * 4);
+        for(int i = startingNum; i < startingNum + 4; i++) {
+            if(adj[i % 4] == ' ') {
+                move(i % 4, 'o');
+                return;
             }
         }
     }
