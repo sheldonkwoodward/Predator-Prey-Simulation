@@ -24,11 +24,11 @@ public class Simulation {
         // add doodlebugs and ants
         for(int i = 0; i < _doodlebugs; i++) {
             // doodlebugList.get(i) = new Doodlebug();
-            doodlebugList.add(new Doodlebug());
+            doodlebugList.add(new Doodlebug(time));
         }
         for(int i = 0; i < _ants; i++) {
             // antList.get(i) = new Ant();
-            antList.add(new Ant());
+            antList.add(new Ant(time));
         }
     }
 
@@ -53,9 +53,7 @@ public class Simulation {
          */
 
         while(!endSimulation()) {
-            // show time info
             System.out.println();
-            timeInfo();
 
             // move doodlebugs
             for(int i = 0; i < doodlebugList.size(); i++) {
@@ -75,12 +73,38 @@ public class Simulation {
             }
 
             // breed Doodlebugs
+            int doodlebugNum = doodlebugList.size();
+            for(int i = 0; i < doodlebugNum; i++) {
+                int breed = doodlebugList.get(i).breed(time, 8);
+                int posX = doodlebugList.get(i).getPosX();
+                int posY = doodlebugList.get(i).getPosY();
+
+                if(breed == 0) doodlebugList.add(new Doodlebug(time, posX + 1, posY));
+                else if(breed == 1) doodlebugList.add(new Doodlebug(time, posX - 1, posY));
+                else if(breed == 2) doodlebugList.add(new Doodlebug(time, posX, posY + 1));
+                else if(breed == 3) doodlebugList.add(new Doodlebug(time, posX, posY - 1));
+            }
+
             // breed Ants
+            int antNum = doodlebugList.size();
+            for(int i = 0; i < antNum; i++) {
+                int breed = antList.get(i).breed(time, 3);
+                int posX = antList.get(i).getPosX();
+                int posY = antList.get(i).getPosY();
+
+                if(breed == 0) antList.add(new Ant(time, posX + 1, posY));
+                else if(breed == 1) antList.add(new Ant(time, posX - 1, posY));
+                else if(breed == 2) antList.add(new Ant(time, posX, posY + 1));
+                else if(breed == 3) antList.add(new Ant(time, posX, posY - 1));
+            }
 
             // starve Doodlebugs
             for(int i = 0; i < doodlebugList.size(); i++) {
                 doodlebugList.get(i).starve(time);
             }
+
+            // show time info
+            timeInfo();
 
             // display grid
             display();

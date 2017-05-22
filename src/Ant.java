@@ -4,7 +4,17 @@
 
 public class Ant extends Organism {
     // constructors
-    Ant() {
+    Ant(int currentTime) {
+        // call super class constructor
+        super(currentTime);
+
+        // set grid location
+        grid[pos[1]][pos[0]] = 'o';
+    }
+    Ant(int currentTime, int posX, int posY) {
+        // call super class constructor
+        super(currentTime, posX, posY);
+
         // set grid location
         grid[pos[1]][pos[0]] = 'o';
     }
@@ -68,9 +78,6 @@ public class Ant extends Organism {
                 }
             }
         }
-    }
-    void breed() {
-        System.out.println("Stub breed called");
     }
     boolean checkDead() {
         if(grid[pos[1]][pos[0]] == 'X') {

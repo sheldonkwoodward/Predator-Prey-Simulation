@@ -7,9 +7,22 @@ public class Doodlebug extends Organism {
     private int lastEat; // timestamp of last eat
 
     // constructors
-    Doodlebug() {
+    Doodlebug(int currentTime) {
+        // call super class constructor
+        super(currentTime);
+
         // setup variables
-        lastEat = 0;
+        lastEat = currentTime;
+
+        // set grid location
+        grid[pos[1]][pos[0]] = 'X';
+    }
+    Doodlebug(int currentTime, int posX, int posY) {
+        // call super class constructor
+        super(currentTime, posX, posY);
+
+        // setup variables
+        lastEat = currentTime;
 
         // set grid location
         grid[pos[1]][pos[0]] = 'X';
@@ -105,14 +118,11 @@ public class Doodlebug extends Organism {
             }
         }
     }
-    void breed() {
-        System.out.println("Stub breed called");
-    }
     void starve(int currentTime) {
-        if(currentTime - lastEat >= 8 && alive) {
+        if(currentTime - lastEat >= 3 && alive) {
             alive = false;
             grid[pos[1]][pos[0]] = ' ';
-            System.out.println("  Doodlebug starved time " + currentTime + " (" + pos[0] + "," + pos[1] + ")");
+            System.out.println("  Doodlebug starved (" + pos[0] + "," + pos[1] + ")");
         }
     }
 }
