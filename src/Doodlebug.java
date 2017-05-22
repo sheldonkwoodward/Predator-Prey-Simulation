@@ -21,13 +21,98 @@ public class Doodlebug extends Organism {
     }
 
     // methods
-    void move() {
-        System.out.println("Stub move called");
+    void move(int currentTime) {
+        // get adjacent spaces
+        char[] adj = new char[4];
+
+        // get adj right
+        try {
+            adj[0] = grid[pos[1]][pos[0] + 1];
+        }
+        catch(ArrayIndexOutOfBoundsException e) {
+            adj[0] = 'B';
+        }
+
+        // get adj left
+        try {
+            adj[1] = grid[pos[1]][pos[0] - 1];
+        }
+        catch(ArrayIndexOutOfBoundsException e) {
+            adj[1] = 'B';
+        }
+
+        // get adj up
+        try {
+            adj[2] = grid[pos[1] + 1][pos[0]];
+        }
+        catch(ArrayIndexOutOfBoundsException e) {
+            adj[2] = 'B';
+        }
+
+        // get adj down
+        try {
+            adj[3] = grid[pos[1] - 1][pos[0]];
+        }
+        catch(ArrayIndexOutOfBoundsException e) {
+            adj[3] = 'B';
+        }
+
+        // check for ant
+        boolean moved = false; // position changed
+        if(adj[0] == 'o') {
+            move(0, 'X');
+            moved = true;
+            lastEat = currentTime;
+            System.out.println("  Ate ant (" + pos[0] + "," + pos[1] + ")");
+        }
+        else if(adj[1] == 'o') {
+            move(1, 'X');
+            moved = true;
+            lastEat = currentTime;
+            System.out.println("  Ate ant (" + pos[0] + "," + pos[1] + ")");
+        }
+        else if(adj[2] == 'o') {
+            move(2, 'X');
+            moved = true;
+            lastEat = currentTime;
+            System.out.println("  Ate ant (" + pos[0] + "," + pos[1] + ")");
+        }
+        else if(adj[3] == 'o') {
+            move(3, 'X');
+            moved = true;
+            lastEat = currentTime;
+            System.out.println("  Ate ant (" + pos[0] + "," + pos[1] + ")");
+        }
+
+        // check for empty space
+        int emptySpaces = 0;
+        for(int i = 0; i < 4; i++) {
+            if(adj[i] == ' ') {
+                emptySpaces++;
+            }
+        }
+
+        // move to random space if available
+        if(emptySpaces > 0) {
+            while (!moved) {
+                int randomNum = (int)(Math.random() * 4);
+                for(int i = 0; i < 4; i++) {
+                    if (randomNum == i && adj[i] == ' ') {
+                        move(i, 'X');
+                        moved = true;
+                    }
+                }
+            }
+        }
     }
     void breed() {
         System.out.println("Stub breed called");
     }
-    void starve() {
-        System.out.println("Stub starve called");
+    void starve(int currentTime) {
+        if(currentTime - lastEat >= 8 && alive) {
+            alive = false;
+            grid[pos[1]][pos[0]] = ' ';
+            System.out.println("  Doodlebug starved time " + currentTime + " (" + pos[0] + "," + pos[1] + ")");
+        }
     }
 }

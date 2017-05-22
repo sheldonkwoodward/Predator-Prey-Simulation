@@ -26,8 +26,8 @@ public class Organism {
 
         // random position till empty is found
         do {
-            pos[0] = (int) (Math.random() * 20);
-            pos[1] = (int) (Math.random() * 20);
+            pos[0] = (int)(Math.random() * 20);
+            pos[1] = (int)(Math.random() * 20);
         } while(grid[pos[1]][pos[0]] != ' ');
     }
 
@@ -51,6 +51,19 @@ public class Organism {
     // methods
     void move() {
         System.out.println("Stub move called");
+    }
+    protected void move(int direction, char organismChar) {
+        // change old position on grid
+        grid[pos[1]][pos[0]] = ' ';
+
+        // do movement
+        if(direction == 0) pos[0]++;
+        else if(direction == 1) pos[0]--;
+        else if(direction == 2) pos[1]++;
+        else if(direction == 3) pos[1]--;
+
+        //change new position on grid
+        grid[pos[1]][pos[0]] = organismChar;
     }
     void breed() {
         System.out.println("Stub breed called");
